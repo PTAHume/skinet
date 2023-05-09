@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Collections;
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Linq;
 using System.Reflection;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +24,16 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                modelBuilder.Model.GetEntityTypes()
+                .SelectMany(entityType => entityType.ClrType.GetProperties()
+                    .Where(x => x.PropertyType == typeof(decimal))
+                    .Select(property => new KeyValuePair<string, string>(entityType.Name, property.Name)))
+                    .ToList()
+                    .ForEach(x => modelBuilder
+                            .Entity(x.Key).Property(x.Value).HasConversion<double>());
+            }
         }
     }
 }
