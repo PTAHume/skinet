@@ -2,7 +2,6 @@ using System.Linq;
 using API.Errors;
 using Core.Interfaces;
 using Infrastructure.Data;
-using Infrastructure.Data.SeedData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
