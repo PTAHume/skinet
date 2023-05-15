@@ -27,7 +27,7 @@ namespace API
             services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
                 x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
-            
+
             services.AddApplicationServices();
             //services.AddSwaggerDocumentation();
 
@@ -38,12 +38,10 @@ namespace API
         {
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseStaticFiles();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
 
             //app.UseSwaggerDocumention();
