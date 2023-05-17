@@ -3,18 +3,26 @@
     <section class="col-3">
       <h5 class="text-warning ms-3">Sort</h5>
       <select class="form mb-4" (change)="onSortSelected($event)">
-        <option *ngFor="let option of sortOptions" [value]="option.value">{{option.name}}</option>
+        <option
+          *ngFor="let option of sortOptions"
+          [value]="option.value">
+          {{option.name}}
+        </option>
       </select>
 
       <h5 class="text-warning ms-3">Brands</h5>
       <ul class="list-group my-3" *ngFor="let brand of brands">
-        <li class="list-group-item " [class.active]="brandIdSelected === brand.id" [value]="brand.id"
+        <li class="list-group-item "
+          [class.active]="brandIdSelected === brand.id"
+          [value]="brand.id"
           (click)="(onBrandSelect(brand.id))">
           {{brand.name}}</li>
       </ul>
       <h5 class="text-warning ms-3">Types</h5>
       <ul class="list-group my-3" *ngFor="let type of types">
-        <li class="list-group-item" [class.active]="typeIdSelected === type.id" [value]="type.id"
+        <li class="list-group-item"
+          [class.active]="typeIdSelected === type.id"
+          [value]="type.id"
           (click)="(onTypeSelect(type.id))">
           {{type.name}}</li>
       </ul>
