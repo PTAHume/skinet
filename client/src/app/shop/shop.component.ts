@@ -47,7 +47,6 @@ export class ShopComponent implements OnInit {
       error: (error) => console.log(error),
     });
   }
-
   public onBrandSelect(brandId: number) {
     this.shopPrams.brandId = brandId;
     this.shopPrams.pageNumber = 1;
@@ -73,7 +72,6 @@ export class ShopComponent implements OnInit {
     this.shopPrams.pageNumber = 1;
     this.getProducts();
   }
-
   public onReset() {
     if (this.searchTerm) {
       this.searchTerm.nativeElement.value = '';
