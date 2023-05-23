@@ -44,7 +44,7 @@ namespace API.Controllers
 
             return Ok(new Pagination<ProductToReturnDto>(
                         productParams.PageIndex,
-                        productParams.PageSize.HasValue ? productParams.PageSize.Value : 1,
+                        productParams.PageSize,
                         totalItems, data));
         }
 

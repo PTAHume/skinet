@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Product } from '../shared/models/products';
 import { ShopService } from './shop.service';
 import { Brand } from '../shared/models/brand';
 import { Type } from '../shared/models/type';
+import { ShopPrams } from '../shared/models/shopPrams';
 
 @Component({
   selector: 'app-shop',
@@ -13,14 +14,14 @@ export class ShopComponent implements OnInit {
   products: Product[] = [];
   brands: Brand[] = [];
   types: Type[] = [];
-  brandIdSelected = 0;
-  typeIdSelected = 0;
-  sortSelected = 'name';
+  shopPrams: ShopPrams = new ShopPrams();
   sortOptions = [
     { name: 'Alphabetical', value: 'name' },
     { name: 'Price: Low to high', value: 'priceAsc' },
     { name: 'Price: hight to low', value: 'priceDesc' },
   ];
+  totalCount: number = 0;
+  @ViewChild('search') searchTerm?: ElementRef;
 
   constructor(private shopService: ShopService) {}
 
@@ -36,25 +37,48 @@ export class ShopComponent implements OnInit {
     });
   }
   private getProducts() {
-    this.shopService
-      .getProducts(this.sortSelected, this.brandIdSelected, this.typeIdSelected)
-      .subscribe({
-        next: (response) => (this.products = response.data),
-        error: (error) => console.log(error),
-      });
+    this.shopService.getProducts(this.shopPrams).subscribe({
+      next: (response) => {
+        this.products = response.data;
+        this.shopPrams.pageNumber = response.pageIndex;
+        this.shopPrams.pageSize = response.pageSize;
+        this.totalCount = response.count;
+      },
+      error: (error) => console.log(error),
+    });
   }
 
   public onBrandSelect(brandId: number) {
-    this.brandIdSelected = brandId;
+    this.shopPrams.brandId = brandId;
+    this.shopPrams.pageNumber = 1;
     this.getProducts();
   }
   public onTypeSelect(typeId: number) {
-    this.typeIdSelected = typeId;
+    this.shopPrams.typeId = typeId;
+     this.shopPrams.pageNumber = 1;
     this.getProducts();
   }
   public onSortSelected(event: any) {
-    console.log(event.target.value);
-    this.sortSelected = event.target.value;
+    this.shopPrams.sort = event.target.value;
     this.getProducts();
+  }
+  public onPageChanged(pageNumber: number) {
+    if (this.shopPrams.pageNumber !== pageNumber) {
+      this.shopPrams.pageNumber = pageNumber;
+      this.getProducts();
+    }
+  }
+  public onSearch() {
+    this.shopPrams.search = this.searchTerm?.nativeElement.value;
+    this.shopPrams.pageNumber = 1;
+    this.getProducts();
+  }
+
+  public onReset() {
+    if (this.searchTerm) {
+      this.searchTerm.nativeElement.value = '';
+      this.shopPrams = new ShopPrams();
+      this.getProducts();
+    }
   }
 }

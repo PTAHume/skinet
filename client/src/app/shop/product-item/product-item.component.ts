@@ -8,6 +8,4 @@ import { Product } from 'src/app/shared/models/products';
 })
 export class ProductItemComponent {
   @Input() product!:Product;
-
-
 }

@@ -2,18 +2,18 @@
   <div class="row">
     <section class="col-3">
       <h5 class="text-warning ms-3">Sort</h5>
-      <select class="form mb-4" (change)="onSortSelected($event)">
+      <select title="Sort" class="form mb-4" (change)="onSortSelected($event)">
         <option
-          *ngFor="let option of sortOptions"
-          [value]="option.value">
+            *ngFor="let option of sortOptions"
+            [value]="option.value">
           {{option.name}}
         </option>
       </select>
 
       <h5 class="text-warning ms-3">Brands</h5>
       <ul class="list-group my-3" *ngFor="let brand of brands">
-        <li class="list-group-item "
-          [class.active]="brandIdSelected === brand.id"
+        <li class="list-group-item"
+          [class.active]="shopPrams.brandId === brand.id"
           [value]="brand.id"
           (click)="(onBrandSelect(brand.id))">
           {{brand.name}}</li>
@@ -21,7 +21,7 @@
       <h5 class="text-warning ms-3">Types</h5>
       <ul class="list-group my-3" *ngFor="let type of types">
         <li class="list-group-item"
-          [class.active]="typeIdSelected === type.id"
+          [class.active]="shopPrams.typeId === type.id"
           [value]="type.id"
           (click)="(onTypeSelect(type.id))">
           {{type.name}}</li>
@@ -29,22 +29,30 @@
     </section>
     <section class="col-9">
       <div class="d-flex justify-content-between align-items-center pb-2">
-        <header>
-          <span>
-            Showing <strong>10</strong> of <strong>18 </strong>results
-          </span>
-        </header>
+      <app-paging-header
+          [pageNumber]="shopPrams.pageNumber"
+          [pageSize]="shopPrams.pageSize"
+          [totalCount]="totalCount"
+          >
+        </app-paging-header>
         <div class="d-flex mt-2">
-          <input type="text" placeholder="Search" class="form-control me-2">
-          <button class="btn-outline-primary mx-2">Search</button>
-          <button class="btn-outline-primary">Reset</button>
+          <input (keyup.enter)="onSearch()" type="text" #search
+              placeholder="Search" class="form-control me-2">
+          <button (click)="onSearch()" class="btn-outline-primary mx-2">Search</button>
+          <button (click)="onReset()" class="btn-outline-primary">Reset</button>
         </div>
       </div>
-      <div class="row row-cols-3 g-3">
+      <div class="row row-cols-3 g-3 mb-4">
         <div class="col" *ngFor="let product of products">
           <app-product-item [product]="product"></app-product-item>
         </div>
       </div>
+     <app-paging-footer
+          [pageNumber]="shopPrams.pageNumber"
+          [pageSize]="shopPrams.pageSize"
+          [totalCount]="totalCount"
+          (pageChanged)="onPageChanged($event)">
+      </app-paging-footer>
     </section>
   </div>
 </div>
