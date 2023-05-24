@@ -5,21 +5,22 @@ import { Brand } from '../shared/models/brand';
 import { Type } from '../shared/models/type';
 import { Pagination } from '../shared/models/pagination';
 import { ShopPrams } from '../shared/models/shopPrams';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  public getProducts(shopPrams: ShopPrams) {
+  getProducts(shopPrams: ShopPrams) {
     let params = new HttpParams();
 
     if (shopPrams.brandId) params = params.append('brandId', shopPrams.brandId);
     if (shopPrams.typeId) params = params.append('typeId', shopPrams.typeId);
-    if(shopPrams.search) params = params.append('search', shopPrams.search);
+    if (shopPrams.search) params = params.append('search', shopPrams.search);
     params = params.append('sort', shopPrams.sort);
     params = params.append('pageIndex', shopPrams.pageNumber);
     params = params.append('pageSize', shopPrams.pageSize);
@@ -28,10 +29,13 @@ export class ShopService {
       params,
     });
   }
-  public getBrands() {
+  getProduct(id: number) {
+    return this.http.get<Product>(this.baseUrl + 'products/' + id);
+  }
+  getBrands() {
     return this.http.get<Brand[]>(this.baseUrl + 'Products/brands');
   }
-  public getTypes() {
+  getTypes() {
     return this.http.get<Type[]>(this.baseUrl + 'Products/types');
   }
 }

@@ -1,0 +1,23 @@
+<div class="container mt-5">
+  <h4>Internal server error. Yes, hrrmmm - The error disappear refreshing will make.</h4>
+  <ng-container *ngIf="error">
+    <h5 class="text-danger">Error information there is: {{error.message}}</h5>
+    <p class="font-weight-bold">
+      From the server this error comes - Angular not
+    </p>
+    <p>Look to the force you must</p>
+    <ol>
+      <li>
+        Network tab, checked have you, Chrome dev tool show the way
+      </li>
+      <li>
+        Be with the force, use postman can you, Reproduce request must you. See same error Angular it can not be!
+        hrrmmm.
+      </li>
+    </ol>
+    <h5>Clue I give you:</h5>
+    <code class="mt-5" style="background-color: whitesmoke;">
+        {{error.details}}
+      </code>
+  </ng-container>
+</div>

@@ -6,9 +6,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./paging-footer.component.scss'],
 })
 export class PagingFooterComponent  {
-  @Input() pageSize!: number;
-  @Input() pageNumber!: number;
-  @Input() totalCount!: number;
+  @Input() pageSize: number = 6;
+  @Input() pageNumber?: number;
+  @Input() totalCount?: number;
   @Output() pageChanged = new EventEmitter<number>();
 
   public onPageChanged(event: any) {
