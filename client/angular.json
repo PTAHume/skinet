@@ -27,9 +27,10 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss",
+              "node_modules/bootswatch/dist/darkly/bootstrap.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
-              "node_modules/ngx-toastr/toastr.css"
-              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/styles.scss"
             ],
             "scripts": []
           },

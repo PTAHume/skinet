@@ -1,4 +1,4 @@
-export class ShopPrams {
+export class ShopParams {
   brandId?: number;
   typeId?: number;
   sort: string = 'name';

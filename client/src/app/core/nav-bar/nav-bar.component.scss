@@ -10,16 +10,23 @@
   top: -12px;
   right: 32px;
 }
-
-a {
-  text-decoration: none;
-  color: #343a40;
-
-  &.active {
-    color: orange;
-  }
+.bg-white {
+  background-color: var(--bs-body-bg) !important;
 }
-
+.active {
+  text-decoration: none !important;
+  color: orange !important;
+  cursor: default !important;
+  pointer-events: none;
+}
+a {
+  color: #cf4747;
+}
+a:hover {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
+  color: white;
+}
 .logo {
   cursor: pointer;
   max-height: 70px;
