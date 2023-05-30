@@ -11,46 +11,38 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace API
 {
-	public class Startup
-	{
-		private readonly IConfiguration _config;
-		public Startup(IConfiguration config)
-		{
-			_config = config;
-		}
+    public class Startup
+    {
+        private readonly IConfiguration _config;
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddApplicationServices(_config);
+        }
 
-			services.AddAutoMapper(typeof(MappingProfiles));
-			services.AddControllers();
-			services.AddDbContext<StoreContext>(x =>
-				x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
+            app.UseAuthorization();
 
-			services.AddApplicationServices();
-			services.AddSwaggerGen();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseMiddleware<ExceptionMiddleware>();
-			app.UseStatusCodePagesWithReExecute("/errors/{0}");
-			app.UseHttpsRedirection();
-			app.UseRouting();
-			app.UseStaticFiles();
-			app.UseCors("CorsPolicy");
-			app.UseAuthorization();
-
-			app.UseSwagger();
-			app.UseSwaggerUI();
-
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
-	}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
 }
