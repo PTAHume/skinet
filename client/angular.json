@@ -30,6 +30,7 @@
               "node_modules/bootswatch/dist/darkly/bootstrap.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css",
               "src/styles.scss"
             ],
             "scripts": []

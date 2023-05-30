@@ -3,16 +3,23 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, delay } from 'rxjs';
+import { Observable, delay, finalize } from 'rxjs';
+import { BusyService } from '../services/busy.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
+  constructor(private busyService: BusyService) {}
 
-  constructor() {}
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(delay(1000));
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    this.busyService.busy();
+    return next.handle(request).pipe(
+      delay(1000),
+      finalize(() => this.busyService.idle())
+    );
   }
 }
