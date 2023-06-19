@@ -15,8 +15,10 @@ export class BasketService {
   baseURL = environment.apiUrl;
   basketSource$ = this.basketSource.asObservable();
   basketTotalSource$ = this.basketTotalSource.asObservable();
+  columnSort: string[] = ['DESC', 'DESC', 'DESC', 'DESC'];
 
   constructor(private http: HttpClient) {}
+
   getBasket(id: string) {
     return this.http.get<Basket>(this.baseURL + 'basket?id=' + id).subscribe({
       next: (basket) => {
@@ -25,7 +27,73 @@ export class BasketService {
       },
     });
   }
-  setBasket(basket: Basket) {
+  addItemToBasket(item: Product | BasketItem, quantity = 1) {
+    if (this.isProduct(item)) item = this.mapProductItemToBasketItem(item);
+    const basket = this.getCurrentBasketValue ?? this.createBasket();
+    basket.items = this.addOdUpdateItem(basket.items, item, quantity);
+    this.setBasket = basket;
+  }
+  removeItemFromBasket(id: number, quantity = 1) {
+    const basket = this.getCurrentBasketValue;
+    if (!basket) return;
+    const item = basket.items.find((x) => x.id === id);
+    if (item) {
+      item.quantity -= quantity;
+      if (item.quantity === 0) {
+        basket.items = basket.items.filter((x) => x.id !== id);
+      }
+      if (basket.items.length > 0) {
+        this.setBasket = basket;
+      } else {
+        this.deleteBasket(basket);
+      }
+    }
+  }
+  deleteBasket(basket: Basket) {
+    return this.http
+      .delete<Basket>(this.baseURL + 'basket?id=' + basket.id)
+      .subscribe({
+        next: () => {
+          this.basketSource.next(null);
+          this.basketTotalSource.next(null);
+          localStorage.removeItem('basket.id');
+        },
+      });
+  }
+  sortColumn(sortBy: string) {
+    if (!this.basketSource.value) return;
+
+    if (sortBy === 'Product') {
+      this.columnSort[0] = this.columnSort[0] === 'ASC' ? 'DESC' : 'ASC';
+      this.basketSource.value.items.sort((x, y) =>
+        this.compare(x.productName, y.productName)
+      );
+      if (this.columnSort[0] === 'DESC')
+        this.basketSource.value.items.reverse();
+    } else if (sortBy === 'Price') {
+      this.columnSort[1] = this.columnSort[1] === 'ASC' ? 'DESC' : 'ASC';
+      this.basketSource.value.items.sort((x, y) =>
+        this.compare(x.price, y.price)
+      );
+      if (this.columnSort[1] === 'DESC')
+        this.basketSource.value.items.reverse();
+    } else if (sortBy === 'Qty') {
+      this.columnSort[2] = this.columnSort[2] === 'ASC' ? 'DESC' : 'ASC';
+      this.basketSource.value.items.sort((x, y) =>
+        this.compare(x.quantity, y.quantity)
+      );
+      if (this.columnSort[2] === 'DESC')
+        this.basketSource.value.items.reverse();
+    } else if (sortBy === 'Total') {
+      this.columnSort[3] = this.columnSort[3] === 'ASC' ? 'DESC' : 'ASC';
+      this.basketSource.value.items.sort((x, y) =>
+        this.compare(x.price * x.quantity, y.price * y.quantity)
+      );
+      if (this.columnSort[3] === 'DESC')
+        this.basketSource.value.items.reverse();
+    }
+  }
+  set setBasket(basket: Basket) {
     this.http.post<Basket>(this.baseURL + 'basket', basket).subscribe({
       next: (basket) => {
         this.basketSource.next(basket);
@@ -33,14 +101,17 @@ export class BasketService {
       },
     });
   }
-  getCurrentBasketValue() {
-    return this.basketSource.value;
+  private compare(a: any, b: any): number {
+    if (a > b) {
+      return 1;
+    } else if (a < b) {
+      return -1;
+    } else {
+      return 0;
+    }
   }
-  addItemToBasket(item: Product | BasketItem, quantity = 1) {
-    if (this.isProduct(item)) item = this.mapProductItemToBasketItem(item);
-    const basket = this.getCurrentBasketValue() ?? this.createBasket();
-    basket.items = this.addOdUpdateItem(basket.items, item, quantity);
-    this.setBasket(basket);
+  get getCurrentBasketValue() {
+    return this.basketSource.value;
   }
   private mapProductItemToBasketItem(item: Product) {
     let itemToAdd!: BasketItem;
@@ -63,33 +134,6 @@ export class BasketService {
       });
     return itemToAdd;
   }
-  removeItemFromBasket(id: number, quantity = 1) {
-    const basket = this.getCurrentBasketValue();
-    if (!basket) return;
-    const item = basket.items.find((x) => x.id === id);
-    if (item) {
-      item.quantity -= quantity;
-      if (item.quantity === 0) {
-        basket.items = basket.items.filter((x) => x.id !== id);
-      }
-      if (basket.items.length > 0) {
-        this.setBasket(basket);
-      } else {
-        this.deleteBasket(basket);
-      }
-    }
-  }
-  deleteBasket(basket: Basket) {
-    return this.http
-      .delete<Basket>(this.baseURL + 'basket?id=' + basket.id)
-      .subscribe({
-        next: () => {
-          this.basketSource.next(null);
-          this.basketTotalSource.next(null);
-          localStorage.removeItem('basket.id');
-        },
-      });
-  }
   private addOdUpdateItem(
     items: BasketItem[],
     itemToAdd: BasketItem,
@@ -109,7 +153,7 @@ export class BasketService {
     return basket;
   }
   private calculateTotals() {
-    const basket = this.getCurrentBasketValue();
+    const basket = this.getCurrentBasketValue;
     if (!basket) return;
     const shipping = 0;
     const subtotal = basket?.items.reduce(

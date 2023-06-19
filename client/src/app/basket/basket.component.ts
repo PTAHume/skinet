@@ -8,6 +8,10 @@ import { BasketItem } from '../shared/models/basket';
   styleUrls: ['./basket.component.scss'],
 })
 export class BasketComponent {
+  public sortOrder: number = 0;
+  public sortDirection = 1;
+  public sortColumn = -1;
+
   constructor(public basketService: BasketService) {}
 
   incrementQuantity(item: BasketItem) {
@@ -15,5 +19,11 @@ export class BasketComponent {
   }
   decrementQuantity(id: number, quantity: number) {
     this.basketService.removeItemFromBasket(id, quantity);
+  }
+  sortBasket(sortBy: string, sortColumn: number) {
+    if (this.sortColumn !== sortColumn) this.sortDirection = 0;
+    this.sortColumn = sortColumn;
+    this.sortDirection = this.sortDirection === 1 ? 0 : 1;
+    this.basketService.sortColumn(sortBy);
   }
 }

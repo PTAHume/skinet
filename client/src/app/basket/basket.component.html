@@ -7,20 +7,43 @@
     <div class="container">
       <div class="row">
         <div class="table-responsive">
+         <p>
+          <i class="fa fa-info-circle me-2" aria-hidden="true"></i>Click on column headers to sort.
+          </p>
           <table class="table">
             <thead class="bg-dark text-uppercase">
               <tr>
                 <th>
-                  <div class="py-2">Product</div>
+                  <div (click)="sortBasket('Product', 1)" class="py-2">Product
+                    <i *ngIf="sortColumn === 1"
+                      class="arrow"
+                      [ngClass]="sortDirection ? 'down' : 'up'">
+                    </i>
+                  </div>
                 </th>
                 <th>
-                  <div class="py-2">Price</div>
+                  <div (click)="sortBasket('Price', 2)" class="py-2">Price
+                    <i *ngIf="sortColumn === 2"
+                      class="arrow"
+                      [ngClass]="sortDirection ? 'down' : 'up'">
+                    </i>
+                  </div>
                 </th>
                 <th>
-                  <div class="py-2">Qty</div>
+                  <div (click)="sortBasket('Qty', 3)" class="py-2">Qty
+                      <i *ngIf="sortColumn === 3"
+                      class="arrow"
+                      [ngClass]="sortDirection ? 'down' : 'up'">
+                      </i>
+                  </div>
                 </th>
                 <th>
-                  <div class="py-2">Total</div>
+                  <div (click)="sortBasket('Total', 4)" class="py-2">Total
+                      <i *ngIf="sortColumn === 4"
+                      class="arrow"
+                      [ngClass]="sortDirection ? 'down' : 'up'">
+                      </i>
+                  </div>
                 </th>
                 <th>
                   <div class="py-2">Remove</div>
@@ -32,14 +55,17 @@
                 <th>
                   <div class="p-2 d-inline-block">
                     <img
+                      title="{{item.productName}}"
                       routerLink="/shop/{{item.id}}"
                       src="{{item.pictureUrl}}"
                       alt="{{item.productName}}"
                       class="img-fluid"
-                      style="max-height: 50px;">
+                      style="max-height: 50px;cursor: pointer;">
                     <div class="ms-3 d-inline-block align-middle">
                       <h5 class="mb-0">
-                        <a routerLink="/shop/{{item.id}}" class="text-light text-decoration-none">
+                        <a routerLink="/shop/{{item.id}}"
+                            title="{{item.productName}}"
+                            class="text-light text-decoration-none">
                           {{item.productName}}
                         </a>
                       </h5>
