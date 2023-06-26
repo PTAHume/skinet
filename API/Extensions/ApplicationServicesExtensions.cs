@@ -19,8 +19,6 @@ public static class ApplicationServicesExtensions
 		services, IConfiguration config)
 	{
 		services.AddControllers();
-		services.AddEndpointsApiExplorer();
-		services.AddSwaggerGen();
 		services.AddDbContext<StoreContext>(x =>
 			x.UseSqlite(config.GetConnectionString("DefaultConnection")));
 		services.AddSingleton<IConnectionMultiplexer>(c =>

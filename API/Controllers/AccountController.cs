@@ -53,7 +53,7 @@ public class AccountController : BaseApiController
 	public async Task<ActionResult<AddressDto>> GetUserAddress()
 	{
 		var user = await _userManager.FindUserByClaimsPrincipleWithAddress(User);
-		return _mapper.Map<Address, AddressDto>(user.Address);
+		return _mapper.Map<AddressDto>(user.Address);
 	}
 
 	[HttpPut("address")]
@@ -61,11 +61,11 @@ public class AccountController : BaseApiController
 	public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
 	{
 		var user = await _userManager.FindUserByClaimsPrincipleWithAddress(User);
-		user.Address = _mapper.Map<AddressDto, Address>(address);
+		user.Address = _mapper.Map<Address>(address);
 		var result = await _userManager.UpdateAsync(user);
-		if (result.Succeeded) return Ok(_mapper.Map<Address, AddressDto>(user.Address));
-        return BadRequest("Problem updating the user");
-    }
+		if (result.Succeeded) return Ok(_mapper.Map<AddressDto>(user.Address));
+		return BadRequest("Problem updating the user");
+	}
 
 	[HttpPost("login")]
 	public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -88,6 +88,13 @@ public class AccountController : BaseApiController
 	[HttpPost("register")]
 	public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
 	{
+
+		if (CheckEmailExists(registerDto.Email).Result.Value)
+		{
+			return new BadRequestObjectResult(
+				new ApiValidationErrorResponse { Errors = new[] { "Email address is in use" } });
+		}
+		
 		var user = new AppUser()
 		{
 			DisplayName = registerDto.DisplayName,

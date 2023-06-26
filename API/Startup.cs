@@ -24,6 +24,7 @@ namespace API
 		{
 			services.AddApplicationServices(_config);
 			services.AddIdentityServices(_config);
+			services.AddSwaggerDocumentation();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,16 +32,13 @@ namespace API
 		{
 			app.UseMiddleware<ExceptionMiddleware>();
 			app.UseStatusCodePagesWithReExecute("/errors/{0}");
-			app.UseHttpsRedirection();
+            app.UseSwaggerDocumentation();
+            app.UseHttpsRedirection();
 			app.UseRouting();
 			app.UseStaticFiles();
 			app.UseCors("CorsPolicy");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-			app.UseSwagger();
-			app.UseSwaggerUI();
-
+			app.UseAuthentication();
+			app.UseAuthorization();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
