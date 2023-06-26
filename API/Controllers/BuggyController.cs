@@ -1,44 +1,48 @@
 using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+public class BuggyController : BaseApiController
 {
-    public class BuggyController : BaseApiController
+    public StoreContext _context;
+
+    public BuggyController(StoreContext context)
     {
-        public StoreContext _context;
+        _context = context;
+    }
 
-        public BuggyController(StoreContext context)
-        {
-            _context = context;
-        }
+    [HttpGet("testauth")]
+    [Authorize]
+    public ActionResult<string> GetSecretText() => "some secret";
 
-        [HttpGet("notfound")]
-        public IActionResult GetNotFoundRequest()
-        {
-            var product = _context.Products.Find(42);
-            if (product == null) return NotFound(new ApiResponse(404));
-            return Ok();
-        }
+    [HttpGet("notfound")]
+    public IActionResult GetNotFoundRequest()
+    {
+        var product = _context.Products.Find(42);
+        if (product == null) return NotFound(new ApiResponse(404));
+        return Ok();
+    }
 
-        [HttpGet("servererror")]
-        public IActionResult GetServerError()
-        {
-            var product = _context.Products.Find(42);
-            var result = product.ToString();
-            return Ok();
-        }
+    [HttpGet("servererror")]
+    public IActionResult GetServerError()
+    {
+        var product = _context.Products.Find(42);
+        var result = product.ToString();
+        return Ok();
+    }
 
-        [HttpGet("badrequest")]
-        public IActionResult GetBadRequest()
-        {
-            return BadRequest(new ApiResponse(400));
-        }
+    [HttpGet("badrequest")]
+    public IActionResult GetBadRequest()
+    {
+        return BadRequest(new ApiResponse(400));
+    }
 
-        [HttpGet("badrequest/{id}")]
-        public IActionResult GetBadRequest(int id)
-        {
-            return Ok();
-        }
+    [HttpGet("badrequest/{id}")]
+    public IActionResult GetBadRequest(int id)
+    {
+        return Ok();
     }
 }

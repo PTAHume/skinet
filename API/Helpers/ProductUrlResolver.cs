@@ -3,25 +3,23 @@ using AutoMapper;
 using Core.Entities;
 using Microsoft.Extensions.Configuration;
 
-namespace API.Helpers
+namespace API.Helpers;
+public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string>
 {
-    public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string>
+    public IConfiguration _config { get; }
+    public ProductUrlResolver(IConfiguration config)
     {
-        public IConfiguration _config { get; }
-        public ProductUrlResolver(IConfiguration config)
+        _config = config;
+    }
+
+    public string Resolve(Product source, ProductToReturnDto destination, string destMember,
+        ResolutionContext context)
+    {
+        if (string.IsNullOrEmpty(source.PictureUrl))
         {
-            _config = config;
+            return null;
         }
 
-        public string Resolve(Product source, ProductToReturnDto destination, string destMember,
-            ResolutionContext context)
-        {
-            if (string.IsNullOrEmpty(source.PictureUrl))
-            {
-                return null;
-            }
-
-            return _config["ApiUrl"] + source.PictureUrl;
-        }
+        return _config["ApiUrl"] + source.PictureUrl;
     }
 }
