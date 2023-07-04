@@ -42,7 +42,7 @@ public class AccountController : BaseApiController
 		};
 	}
 
-	[HttpGet("emailexists")]
+	[HttpGet("emailExists")]
 	public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
 	{
 		return await _userManager.FindByEmailAsync(email) != null;

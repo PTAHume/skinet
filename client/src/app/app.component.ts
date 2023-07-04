@@ -1,5 +1,5 @@
+import { AccountService } from './account/account.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BasketService } from './basket/basket.service';
 
 @Component({
@@ -10,10 +10,23 @@ import { BasketService } from './basket/basket.service';
 export class AppComponent implements OnInit {
   title = 'Skinet';
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
-    const basketId = localStorage.getItem("basket.id");
-    if(basketId) this.basketService.getBasket(basketId);
+    this.loadBasket();
+    this.loadCurrentUser();
+  }
+
+  loadBasket() {
+    const basketId = localStorage.getItem('basket.id');
+    if (basketId) this.basketService.getBasket(basketId);
+  }
+
+  loadCurrentUser() {
+    const token = localStorage.getItem('token');
+     this.accountService.loadCurrentUser(token).subscribe();
   }
 }
