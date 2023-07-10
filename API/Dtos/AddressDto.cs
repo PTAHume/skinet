@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Dtos;
+namespace API.DTOs;
 
-public class AddressDto
+public class AddressDTO
 {
     [Required]
     public string FirstName { get; set; }

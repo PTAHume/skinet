@@ -1,6 +1,6 @@
-namespace API.Dto;
+namespace API.DTOs;
 
-    public class ProductToReturnDto
+public class ProductToReturnDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }

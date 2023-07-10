@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using API.Dtos;
+using API.DTOs;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -25,7 +25,7 @@ public class BasketController : BaseApiController
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
+	public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDTO basket)
 	{
 		var customerBasket = _mapper.Map<CustomerBasket>(basket);
 		var updatedBasket = await 

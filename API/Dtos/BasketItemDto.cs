@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Dtos;
-public class BasketItemDto
+namespace API.DTOs;
+public class BasketItemDTO
 {
 	[Required]
 	public int Id { get; set; }

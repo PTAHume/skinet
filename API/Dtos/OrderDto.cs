@@ -1,11 +1,10 @@
-using API.Dtos;
-using Core.Entities.OrderAggregate;
+using API.DTOs;
 
-namespace API.Dto;
+namespace API.DTO;
 
-public class OrderDto
+public class OrderDTO
 {
     public int DeliveryMethodId { get; set; }
     public string BasketId { get; set; }
-    public AddressDto ShipToAddress { get; set; }
+    public AddressDTO ShipToAddress { get; set; }
 }
