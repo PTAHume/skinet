@@ -1,9 +1,11 @@
 using Core.Entities;
+using Core.Entities.OrderAggregate;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -19,12 +21,7 @@ public class StoreContextSeed
             {
                 var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
                 var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
-
-                foreach (var item in brands)
-                {
-                    context.ProductBrands.Add(item);
-                }
-
+                await context.ProductBrands.AddRangeAsync(brands);
                 await context.SaveChangesAsync();
             }
 
@@ -32,12 +29,7 @@ public class StoreContextSeed
             {
                 var typesData = File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
                 var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
-
-                foreach (var item in types)
-                {
-                    context.ProductTypes.Add(item);
-                }
-
+                await context.ProductTypes.AddRangeAsync(types);
                 await context.SaveChangesAsync();
             }
 
@@ -45,14 +37,18 @@ public class StoreContextSeed
             {
                 var productsData = File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-
-                foreach (var item in products)
-                {
-                    context.Products.Add(item);
-                }
-
+                await context.Products.AddRangeAsync(products);
                 await context.SaveChangesAsync();
             }
+
+            if (!context.DeliveryMethods.Any())
+            {
+                var methodsData = await File.ReadAllTextAsync("../Infrastructure/Data/SeedData/delivery.json");
+                var methods = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(new MemoryStream(Encoding.UTF8.GetBytes(methodsData)));
+                await context.DeliveryMethods.AddRangeAsync(methods);
+                await context.SaveChangesAsync();
+            }
+
         }
         catch (Exception ex)
         {

@@ -22,11 +22,12 @@ public class AppIdentityDbContextSeed
 					LastName = "User",
 					Street = "123 Street",
 					City = "Wales",
-					County = "UK",
+					County = "Gwent",
+                    Country = "UK",
 					PostCode = "AB1 2CD"
 				}
 			};
-            await manager.CreateAsync(user, "Pa$$w0rd");
-        }
+			await manager.CreateAsync(user, "Pa$$w0rd");
+		}
 	}
 }
