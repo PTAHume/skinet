@@ -1,0 +1,31 @@
+.cart-no {
+  position: absolute;
+  min-height: 25px;
+  min-width: 25px;
+  border-radius: 50%;
+  font-size: 1em;
+  background: blue;
+  color: white;
+  text-align: center;
+  top: -12px;
+  right: 32px;
+}
+.bg-white {
+  background-color: var(--bs-body-bg) !important;
+}
+.active {
+  text-decoration: none !important;
+  color: orange !important;
+}
+a {
+  color: #47c4cf;
+}
+a:hover {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
+  color: #cf47ca;
+}
+.logo {
+  cursor: pointer;
+  max-height: 70px;
+}

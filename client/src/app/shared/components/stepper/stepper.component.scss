@@ -1,0 +1,34 @@
+button.nav-link {
+  background-color: rgb(48, 48, 48);
+  border-radius: 0;
+  border: none;
+  color: #47c4cf;
+}
+
+.nav-link:hover {
+  color: #6f42c1;
+  --bs-nav-pills-link-hover-color: #6f42c1;
+}
+
+.nav-link:disabled,
+.nav-link.disabled:hover {
+  cursor: default;
+  color: var(--bs-nav-link-disabled-color);
+  background-color: #00000054;
+}
+
+.nav-link.active,
+.nav-link.active:focus,
+.nav-link.active:hover {
+  cursor: default;
+  color: orange;
+  --bs-nav-pills-link-active-color: orange;
+  --bs-nav-pills-link-active-bg: ##444;
+  background-color: #444;
+}
+
+.check-mark {
+  display: inline-flex;
+  padding-left: 0.2em;
+  align-self: center;
+}

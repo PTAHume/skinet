@@ -1,0 +1,27 @@
+<div class="container mb-5" *ngIf="(basketService.basketSource$ | async) != null">
+  <div class="row">
+    <div class="col-8">
+      <app-stepper [checkoutReviewComponent]="checkoutReviewComponent" #appStepper>
+        <cdk-step [label]="'Address'" [completed]="checkoutForm.get('addressForm')?.valid">
+          <app-checkout-address [checkoutForm]="checkoutForm"></app-checkout-address>
+        </cdk-step>
+        <cdk-step [label]="'Delivery'" [completed]="checkoutForm.get('deliveryForm')?.valid">
+          <app-checkout-delivery [checkoutForm]="checkoutForm"></app-checkout-delivery>
+        </cdk-step>
+        <cdk-step [label]="'Review'" [completed]="true">
+          <app-checkout-review #checkoutReviewComponent [appStepper]="appStepper"></app-checkout-review>
+        </cdk-step>
+        <cdk-step [label]="'Payment'" [completed]="checkoutForm.get('paymentForm')?.valid">
+          <app-checkout-payment [checkoutForm]="checkoutForm"></app-checkout-payment>
+        </cdk-step>
+      </app-stepper>
+    </div>
+    <div class="col-4 mb-5">
+      <app-order-totals></app-order-totals>
+    </div>
+  </div>
+</div>
+<div class="container mb-5" *ngIf="(basketService.basketSource$ | async) === null">
+  <p>Missing basket, please go back to the shop and add items to your basket</p>
+  <button class="btn btn-primary" routerLink="/shop">Back to shop</button>
+</div>

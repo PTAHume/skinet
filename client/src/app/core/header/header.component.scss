@@ -1,0 +1,10 @@
+::ng-deep .xng-breadcrumb-item {
+  text-decoration: none;
+   color: #47c4cf;
+  & a:hover {
+     text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
+    color:#cf47ca
+  }
+}

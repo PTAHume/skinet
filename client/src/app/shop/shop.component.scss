@@ -1,0 +1,32 @@
+.form-control {
+  float: left;
+  margin: 5px;
+  width: 300px;
+}
+.list-group-item {
+  cursor: pointer;
+}
+ul li a {
+  color: #ead6b7;
+  display: block;
+  text-decoration: none;
+  padding: 16px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: inline-block;
+}
+
+ul li a:hover {
+  color: #332419;
+  display: block;
+  text-decoration: none;
+}
+
+li:hover {
+  background-color: #c0b7ea;
+}
