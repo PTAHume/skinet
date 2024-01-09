@@ -8,11 +8,11 @@
   <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.34.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
       <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
       <PackageReference Include="Stripe.net" Version="41.24.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.34.0" />
   </ItemGroup>
 
   <PropertyGroup>
